@@ -17,7 +17,9 @@ func main() {
 }
 //a very simple handler returns a string
 func viewHandler(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Content-Type", "text/html; charset=utf-8")
     fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])
+    fmt.Fprint(w, "<a href='/html/gopage'>Click here to see a new page</a>")
 }
 //handler returns an html page composed of the url path parameter and html content from file
 func htmlHandler(w http.ResponseWriter, r *http.Request) {
