@@ -4,15 +4,22 @@ import (
     "fmt"
     "net/http"
     "io/ioutil"
+    "encoding/json"
 )
 
 type Page struct {
     Title string
     Body  []byte
 }
+type JsonObject struct {
+    Id    int
+    Name string
+  }
+  
 func main() {
     http.HandleFunc("/view/", viewHandler)
     http.HandleFunc("/html/", htmlHandler)
+    http.HandleFunc("/jsonResult/", jsonResultHandler)
     http.ListenAndServe(":9090", nil)
 }
 //a very simple handler returns a string
@@ -27,7 +34,7 @@ func htmlHandler(w http.ResponseWriter, r *http.Request) {
     p, _ := loadPage(title)
     fmt.Fprintf(w, "<h1>%s</h1><div>%s</div>", p.Title, p.Body)
 }
-//compiles the actual page to be returned
+//returns an html page if available using the url path parameter provided
 func loadPage(title string) (*Page, error) {
     filename := title + ".html"
     body, err := ioutil.ReadFile(filename)
@@ -36,3 +43,14 @@ func loadPage(title string) (*Page, error) {
     }
     return &Page{Title: title, Body: body}, nil
 }
+//return json
+func jsonResultHandler(w http.ResponseWriter, r *http.Request) {
+    jsonObject := JsonObject{1, "Programmer"}  
+    js, err := json.Marshal(jsonObject)
+    if err != nil {
+      http.Error(w, err.Error(), http.StatusInternalServerError)
+      return
+    }  
+    w.Header().Set("Content-Type", "application/json")
+    w.Write(js)
+  }
