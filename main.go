@@ -6,6 +6,8 @@ import (
     "io/ioutil"
     "encoding/json"
     "strings"
+    "log"
+	/*"net/url"*/
 )
 
 type Page struct {
@@ -15,12 +17,18 @@ type Page struct {
 type JsonObject struct {
     Id    int
     Name string
-  }
+}
+type User struct{
+    UserId int
+    Title string
+    Body string
+}
   
 func main() {
     http.HandleFunc("/view/", viewHandler)
     http.HandleFunc("/html/", htmlHandler)
     http.HandleFunc("/jsonResult/", jsonResultHandler)
+    http.HandleFunc("/apiConsumer/", apiConsumerHandler)
     http.ListenAndServe(":9090", nil)
 }
 //a very simple handler returns a string
@@ -54,5 +62,29 @@ func jsonResultHandler(w http.ResponseWriter, r *http.Request) {
       return
     }  
     w.Header().Set("Content-Type", "application/json")
+    w.Write(js)
+  }
+  //consume a rest api and return the json result
+  func apiConsumerHandler(w http.ResponseWriter, r *http.Request){
+    url := "https://jsonplaceholder.typicode.com/posts/3"
+    req, err := http.NewRequest("GET", url, nil)
+    if err != nil {
+		log.Fatal("NewRequest: ", err)
+		return
+    }
+    client := &http.Client{}
+    resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal("Do: ", err)
+		return
+	}
+    defer resp.Body.Close()
+    var record User
+    if err := json.NewDecoder(resp.Body).Decode(&record); err != nil {
+		log.Println(err)
+    }
+    w.Header().Set("Content-Type", "application/json")
+    
+    js, err := json.Marshal(record)
     w.Write(js)
   }
