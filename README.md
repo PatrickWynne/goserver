@@ -12,3 +12,14 @@ Examples included are
 * return json result
 * return external RESTful API json result [GET]
 
+### To build this Go server into an executable
+
+$ go build main.go
+
+### To run and compile this Go server 
+
+$ go run main.exe
+
+### To run this Go server
+
+$ main.exe
