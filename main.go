@@ -30,6 +30,7 @@ func main() {
     http.HandleFunc("/html/", htmlHandler)
     http.HandleFunc("/jsonResult/", jsonResultHandler)
     http.HandleFunc("/apiConsumer/", apiConsumerHandler)
+    http.HandleFunc("/post", postHandler)
     http.ListenAndServe(":9090", nil)
 }
 func textHandler(w http.ResponseWriter, r *http.Request){
@@ -92,3 +93,7 @@ func jsonResultHandler(w http.ResponseWriter, r *http.Request) {
     js, err := json.Marshal(record)
     w.Write(js)
   }
+func postHandler(w http.ResponseWriter, r *http.Request){
+    name := r.URL.Query().Get("name")
+    fmt.Fprintf(w, "Hello %s", name)
+}
