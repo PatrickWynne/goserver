@@ -24,3 +24,5 @@ $ go run main.exe
 ### To run this Go server
 
 $ main.exe
+
+This example is live hosted on google apps engine, see the wiki to get there
