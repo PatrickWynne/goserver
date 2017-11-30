@@ -1,4 +1,4 @@
-package main
+package goserver
 
 import (
     "fmt"
@@ -24,7 +24,7 @@ type User struct{
     Body string
 }
   
-func main() {
+func init() {
     http.HandleFunc("/text/", textHandler)
     http.HandleFunc("/view/", viewHandler)
     http.HandleFunc("/html/", htmlHandler)
