@@ -31,7 +31,7 @@ func init() {
     http.HandleFunc("/jsonResult/", jsonResultHandler)
     http.HandleFunc("/apiConsumer/", apiConsumerHandler)
     http.HandleFunc("/post", postHandler)
-    http.ListenAndServe(":9090", nil)
+    http.ListenAndServe(":8080", nil)
 }
 func textHandler(w http.ResponseWriter, r *http.Request){
     fmt.Fprintf(w, "Hello World")
