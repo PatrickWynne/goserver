@@ -11,6 +11,7 @@ Examples included are
 * return render [page].html
 * return json result
 * return external RESTful API json result [GET]
+* return parameter of query string
 
 ### To build this Go server into an executable
 
